@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Chahar-Su Field Questionnaire — Camping Lighting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b1524;--card:#13213b;--card2:#0e1a30;--line:#24395e;--txt:#e9eff9;--mut:#9db0cc;--acc:#ffb454;--acc2:#f08c2e;--err:#ff6b6b;--r:14px;--font:'Inter','Segoe UI',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--txt);line-height:1.8;font-size:16px}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(1.2px 1.2px at 12% 18%,rgba(255,255,255,.35) 50%,transparent 51%),radial-gradient(1px 1px at 78% 12%,rgba(255,255,255,.3) 50%,transparent 51%),radial-gradient(1.4px 1.4px at 62% 30%,rgba(255,255,255,.22) 50%,transparent 51%),radial-gradient(1px 1px at 32% 44%,rgba(255,255,255,.2) 50%,transparent 51%),radial-gradient(1.2px 1.2px at 88% 55%,rgba(255,255,255,.25) 50%,transparent 51%),radial-gradient(1px 1px at 8% 70%,rgba(255,255,255,.2) 50%,transparent 51%),radial-gradient(1.6px 1.6px at 46% 8%,rgba(255,255,255,.18) 50%,transparent 51%)}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:26px 16px 64px}
+.hero{text-align:center;padding:10px 8px 18px}
+.moon{filter:drop-shadow(0 0 14px rgba(255,180,84,.35))}
+.chip{display:inline-block;font-size:.75rem;letter-spacing:.4px;color:#23160a;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:99px;padding:3px 12px;font-weight:700;margin-top:8px}
+h1{font-size:1.45rem;margin:12px 0 6px;font-weight:800}
+.sub{color:var(--mut);margin:0 auto;max-width:660px;font-size:.95rem}
+.badges{color:var(--mut);font-size:.82rem;margin:10px 0 0}
+.dot{opacity:.5;margin:0 4px}
+.prog{position:sticky;top:10px;z-index:6;display:flex;align-items:center;gap:10px;background:rgba(14,26,48,.93);border:1px solid var(--line);border-radius:99px;padding:8px 14px;backdrop-filter:blur(6px)}
+.pbar{flex:1;height:8px;background:#1b2c4c;border-radius:99px;overflow:hidden}
+#bar{height:100%;width:0%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .3s}
+.pct{font-size:.8rem;color:var(--mut);min-width:38px;text-align:center}
+.errbox{background:rgba(255,107,107,.12);border:1px solid var(--err);color:#ffd9d9;border-radius:12px;padding:12px 16px;margin:14px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 20px 8px;margin:16px 0}
+.intro{padding:16px 20px;color:var(--mut);font-size:.95rem;line-height:1.9}
+.partcard{padding-bottom:16px}
+.part{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.part .n{width:44px;height:44px;flex:none;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#23160a;display:grid;place-items:center;font-weight:800;font-size:1.15rem}
+.part h2{margin:0;font-size:1.08rem;font-weight:800}
+.part .hint{margin:0}
+.qwrap{padding:16px 4px;border-top:1px dashed #22355a;margin-top:10px}
+.qwrap.err{background:rgba(255,107,107,.08);border-radius:10px;box-shadow:inset 0 0 0 1px var(--err);padding-inline:10px}
+.q{font-weight:700;margin:0 0 10px}
+.reqstar{color:var(--acc);font-weight:800}
+.tag{font-size:.72rem;color:var(--mut);border:1px solid var(--line);border-radius:99px;padding:1px 9px;vertical-align:middle}
+.hint{color:var(--mut);font-size:.85rem;margin:0 0 10px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.opts.rows{grid-template-columns:1fr}
+.opts.two{grid-template-columns:1fr 1fr}
+@media (max-width:560px){.opts.two{grid-template-columns:1fr}}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);background:var(--card2);border-radius:12px;padding:10px 14px;cursor:pointer;min-height:44px}
+.opt:hover{border-color:var(--acc)}
+.opt input{margin-top:5px;accent-color:var(--acc);flex:none}
+.opt span{font-size:.95rem}
+.optw.sel .opt{border-color:var(--acc);background:rgba(255,180,84,.13)}
+.ot{display:none;margin-top:8px}
+.optw.sel .ot{display:block}
+.scale{display:flex;gap:8px}
+.scale .optw{flex:1}
+.scale .opt{justify-content:center;padding:10px 0;font-weight:800;min-height:0}
+.scalemeta{display:flex;justify-content:space-between;color:var(--mut);font-size:.78rem;margin-top:6px}
+input[type=text],textarea{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:11px 14px;font:inherit}
+input[type=text]:focus,textarea:focus,.opt:focus-within{outline:2px solid rgba(255,180,84,.5);outline-offset:1px}
+textarea{min-height:96px;resize:vertical}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:16px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--card2);color:var(--txt);padding:10px 18px;border-radius:12px;cursor:pointer;font:inherit;font-size:.95rem}
+.btn:hover{border-color:var(--acc)}
+.btn.primary{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;color:#23160a;font-weight:800}
+.btn.ghost{background:transparent}
+.btn.danger{border-color:rgba(255,107,107,.5);color:#ffb3b3}
+.done h2{margin-top:4px}
+.foot .row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.foot .saved{font-size:.95rem}
+@media print{
+body{background:#fff;color:#111}
+body::before{display:none}
+.noprint{display:none!important}
+.card{background:#fff;border-color:#999;color:#111;border-radius:0;page-break-inside:avoid}
+.opt{background:#fff;color:#111;border-color:#888}
+.q,.part h2,.opt span,.foot .saved{color:#111}
+textarea,input[type=text]{background:#fff;color:#111;border-color:#888}
+.qwrap{border-top-color:#bbb}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+<svg class="moon" viewBox="0 0 24 24" width="44" height="44" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="#ffb454"/></svg>
+<div class="chip noprint">Chahar-Su 0.02 · Vedgar + Bavargan instrument</div>
+<h1>Chahar-Su Field Questionnaire — Camping Lighting</h1>
+<p class="sub">A field instrument of the Chahar-Su model 0.02 — capturing real discomforts (Vedgar) and deep beliefs (Bavargan) about nighttime camping light.</p>
+<p class="badges">Time: 10–15 minutes <span class="dot">&middot;</span> Answers stay on this device <span class="dot">&middot;</span> Export: JSON & CSV</p>
+</header>
+<div class="prog noprint"><div class="pbar"><div id="bar"></div></div><span id="pct" class="pct">0%</span></div>
+<div id="errbox" class="errbox noprint" role="alert" hidden></div>
+<div id="intro" class="card intro">This questionnaire has two parts: 'Vedgar' records your experiences and emotions in camp darkness; 'Bavargan' explores your deeper beliefs, rules and narratives. There are no right or wrong answers — reply honestly from real experience. Your answers are saved only on this device; at the end you can download the file and send it to the researcher.</div>
+<form id="qform" novalidate>
+<section class="card partcard">
+<div class="part"><div class="n">A</div><div><h2>Part A · About you</h2><p class="hint">A few short traits; they help the researcher contextualize the analysis.</p></div></div>
+<div class="qwrap" data-qwrap="A1">
+<p class="q">A nickname or code for the respondent (to track the session) <span class="tag">optional</span></p>
+<input type="text" name="A1" placeholder="e.g., camper 1">
+</div>
+<div class="qwrap" data-qwrap="A2">
+<p class="q"><span class="reqstar">*</span> Your age group?</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="radio" name="A2" value="u18"><span>Under 18</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A2" value="18-25"><span>18–25</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A2" value="26-35"><span>26–35</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A2" value="36-50"><span>36–50</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A2" value="o50"><span>Over 50</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="A3">
+<p class="q"><span class="reqstar">*</span> Gender?</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="radio" name="A3" value="f"><span>Female</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A3" value="m"><span>Male</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A3" value="na"><span>Prefer not to say</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="A4">
+<p class="q"><span class="reqstar">*</span> How long have you been camping?</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="radio" name="A4" value="lt1"><span>Less than 1 year</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A4" value="y1-3"><span>1–3 years</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A4" value="y4-10"><span>4–10 years</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A4" value="gt10"><span>More than 10 years</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="A5">
+<p class="q"><span class="reqstar">*</span> How many camping nights per year, usually?</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="radio" name="A5" value="n1-2"><span>1–2 nights</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A5" value="n3-5"><span>3–5 nights</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A5" value="n6-10"><span>6–10 nights</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A5" value="ngt10"><span>More than 10 nights</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="A6">
+<p class="q"><span class="reqstar">*</span> Where do you usually camp?</p>
+<p class="hint">You can select several options.</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="checkbox" name="A6" value="forest"><span>Forest</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A6" value="mountain"><span>Mountain</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A6" value="desert"><span>Desert</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A6" value="seaside"><span>Seaside</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A6" value="riverlake"><span>Riverside or lakeside</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A6" value="yardcar"><span>Backyard or car camping</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A6" value="__other__"><span>Other</span></label><input type="text" class="ot" name="A6__ot" placeholder="Please specify…"></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="A7">
+<p class="q"><span class="reqstar">*</span> Who do you usually camp with?</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="radio" name="A7" value="solo"><span>Alone</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A7" value="couple"><span>As a couple</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A7" value="family"><span>Family with children</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="A7" value="friends"><span>Group of friends</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="A8">
+<p class="q"><span class="reqstar">*</span> Which light sources do you usually use at night?</p>
+<p class="hint">You can select several options.</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="checkbox" name="A8" value="torch"><span>Handheld flashlight</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A8" value="headlamp"><span>Headlamp</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A8" value="lantern"><span>Table or pole camping lantern</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A8" value="string"><span>String or hook lights</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A8" value="phone"><span>Phone light</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A8" value="fire"><span>Campfire</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A8" value="tentlight"><span>Light inside the tent</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="A8" value="__other__"><span>Other</span></label><input type="text" class="ot" name="A8__ot" placeholder="Please specify…"></div>
+</div>
+</div>
+</section>
+<section class="card partcard">
+<div class="part"><div class="n">B</div><div><h2>Part B · Vedgar: experiences & emotions in the dark</h2><p class="hint">Your real experiences, emotions and discomforts in camp darkness.</p></div></div>
+<div class="qwrap" data-qwrap="B1">
+<p class="q"><span class="reqstar">*</span> Which nighttime activity is most unpleasant for you?</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="radio" name="B1" value="toilet"><span>Going to the toilet</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B1" value="move"><span>Moving around the camp</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B1" value="eat"><span>Eating</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B1" value="check"><span>Checking the tent and gear</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B1" value="winddown"><span>Winding down before sleep</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B1" value="__other__"><span>Other</span></label><input type="text" class="ot" name="B1__ot" placeholder="Please specify…"></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="B2">
+<p class="q"><span class="reqstar">*</span> What creates this discomfort?</p>
+<p class="hint">You can select several options.</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="checkbox" name="B2" value="dark"><span>Total darkness</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B2" value="battery"><span>Battery dying mid-activity</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B2" value="nopath"><span>No fixed lights on the paths</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B2" value="animals"><span>Fear of wild animals</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B2" value="insects"><span>Insects gathering around the light</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B2" value="bump"><span>Bumping into things in the dark</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B2" value="terrain"><span>Uneven ground</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B2" value="__other__"><span>Other</span></label><input type="text" class="ot" name="B2__ot" placeholder="Please specify…"></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="B3">
+<p class="q"><span class="reqstar">*</span> How intense is the discomfort when you move in the dark?</p>
+<div class="scale">
+<div class="optw"><label class="opt"><input type="radio" name="B3" value="1"><span>1</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B3" value="2"><span>2</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B3" value="3"><span>3</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B3" value="4"><span>4</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B3" value="5"><span>5</span></label></div>
+</div>
+<div class="scalemeta"><span>1 = barely noticeable</span><span>5 = unbearable</span></div>
+</div>
+<div class="qwrap" data-qwrap="B4">
+<p class="q"><span class="reqstar">*</span> Which emotion comes up most in these situations?</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="radio" name="B4" value="anxiety"><span>Anxiety</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B4" value="frustration"><span>Frustration</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B4" value="fear"><span>Fear</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B4" value="disgust"><span>Disgust (insects)</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B4" value="tiredness"><span>Tiredness</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B4" value="helplessness"><span>Helplessness</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="B4b">
+<p class="q"><span class="reqstar">*</span> How intense is this emotion?</p>
+<div class="scale">
+<div class="optw"><label class="opt"><input type="radio" name="B4b" value="1"><span>1</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B4b" value="2"><span>2</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B4b" value="3"><span>3</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B4b" value="4"><span>4</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B4b" value="5"><span>5</span></label></div>
+</div>
+<div class="scalemeta"><span>1 = very mild</span><span>5 = very strong</span></div>
+</div>
+<div class="qwrap" data-qwrap="B5">
+<p class="q"><span class="reqstar">*</span> When darkness falls, how do you usually deal with it?</p>
+<div class="opts rows">
+<div class="optw"><label class="opt"><input type="radio" name="B5" value="conscious"><span>Conscious planning (I prepare lights and batteries in advance)</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B5" value="instinct"><span>Instinctive reactions in the moment</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B5" value="mix"><span>A mix of both</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="B6">
+<p class="q"><span class="reqstar">*</span> The moment your flashlight dims or dies halfway, what is your first thought and feeling?</p>
+<textarea name="B6" placeholder="First thought and feeling…"></textarea>
+</div>
+<div class="qwrap" data-qwrap="B7">
+<p class="q"><span class="reqstar">*</span> Complete the sentence: 'I wish my camping light …'</p>
+<textarea name="B7" placeholder="I wish my camping light…"></textarea>
+</div>
+<div class="qwrap" data-qwrap="B8">
+<p class="q"><span class="reqstar">*</span> Complete: 'If something could replace the ceiling light inside the tent, I would want it to …'</p>
+<textarea name="B8" placeholder="I would want it to…"></textarea>
+</div>
+<div class="qwrap" data-qwrap="B9">
+<p class="q">Metaphor: 'A camp night without light is like … , because …' <span class="tag">optional</span></p>
+<textarea name="B9" placeholder="is like … , because …"></textarea>
+</div>
+<div class="qwrap" data-qwrap="B10">
+<p class="q"><span class="reqstar">*</span> What is your usual reaction to this problem? (closest option)</p>
+<div class="opts rows">
+<div class="optw"><label class="opt"><input type="radio" name="B10" value="L1"><span>I act as if the problem doesn't exist (denial)</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B10" value="L2"><span>I complain verbally</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B10" value="L3"><span>I look for information and solutions</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B10" value="L4"><span>I warn others and share my experience</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="B10" value="L5"><span>I have taken practical action (bought or modified gear)</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="B11">
+<p class="q"><span class="reqstar">*</span> When choosing a light, which criteria matter to you?</p>
+<p class="hint">You can select several options.</p>
+<div class="opts">
+<div class="optw"><label class="opt"><input type="checkbox" name="B11" value="battery"><span>Battery life</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B11" value="brightness"><span>Brightness</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B11" value="weight"><span>Weight and size</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B11" value="water"><span>Water resistance</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B11" value="price"><span>Price</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B11" value="noinsect"><span>Doesn't attract insects</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B11" value="modes"><span>Multiple modes (red light, dimmer)</span></label></div>
+<div class="optw"><label class="opt"><input type="checkbox" name="B11" value="__other__"><span>Other</span></label><input type="text" class="ot" name="B11__ot" placeholder="Please specify…"></div>
+</div>
+</div>
+</section>
+<section class="card partcard">
+<div class="part"><div class="n">C</div><div><h2>Part C · Bavargan: beliefs, values & narratives</h2><p class="hint">Your deeper beliefs, rules, values and stories about camp light.</p></div></div>
+<div class="qwrap" data-qwrap="C1">
+<p class="q"><span class="reqstar">*</span> Root metaphor — complete: 'A camping light is like … , because …'</p>
+<textarea name="C1" placeholder="is like … , because …"></textarea>
+</div>
+<div class="qwrap" data-qwrap="C2">
+<p class="q"><span class="reqstar">*</span> Complete: 'When camping, one should always …'</p>
+<textarea name="C2" placeholder="one should always…"></textarea>
+</div>
+<div class="qwrap" data-qwrap="C3">
+<p class="q"><span class="reqstar">*</span> Complete: 'In a tent or at a camp, one should never …'</p>
+<textarea name="C3" placeholder="one should never…"></textarea>
+</div>
+<div class="qwrap" data-qwrap="C4">
+<p class="q"><span class="reqstar">*</span> The ideal myth: describe how a truly professional camper behaves at night in camp.</p>
+<textarea name="C4" placeholder="Describe the night scene of a pro camper…"></textarea>
+</div>
+<div class="qwrap" data-qwrap="C5a">
+<p class="q"><span class="reqstar">*</span> Strong clear light, or soft low-consumption light?</p>
+<div class="opts two">
+<div class="optw"><label class="opt"><input type="radio" name="C5a" value="strong"><span>Strong clear light</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="C5a" value="soft"><span>Soft low-consumption light</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="C5b">
+<p class="q"><span class="reqstar">*</span> Being visible and safe, or staying unseen (not attracting animals and insects)?</p>
+<div class="opts two">
+<div class="optw"><label class="opt"><input type="radio" name="C5b" value="visible"><span>Visible and safe</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="C5b" value="unseen"><span>Staying unseen</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="C5c">
+<p class="q"><span class="reqstar">*</span> Function (practicality), or beauty (design and feeling)?</p>
+<div class="opts two">
+<div class="optw"><label class="opt"><input type="radio" name="C5c" value="function"><span>Function</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="C5c" value="beauty"><span>Beauty</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="C5d">
+<p class="q"><span class="reqstar">*</span> Why these choices?</p>
+<textarea name="C5d" placeholder="My reasons…"></textarea>
+</div>
+<div class="qwrap" data-qwrap="C6">
+<p class="q"><span class="reqstar">*</span> Excellence threshold: if a camping lighting system were 'perfect', what would it look like? Write every detail.</p>
+<p class="hint">The more precise you are, the more valuable the threshold analysis becomes.</p>
+<textarea name="C6" placeholder="Every detail of the perfect system…"></textarea>
+</div>
+<div class="qwrap" data-qwrap="C7">
+<p class="q"><span class="reqstar">*</span> Your camping nights feel most like which story?</p>
+<div class="opts rows">
+<div class="optw"><label class="opt"><input type="radio" name="C7" value="hero"><span>A hero overcoming difficulties</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="C7" value="victim"><span>A victim of circumstances and poor gear</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="C7" value="transform"><span>Transformation and learning (I got better from experience)</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="C7" value="conflict"><span>An unresolved conflict (the same problem repeats)</span></label></div>
+<div class="optw"><label class="opt"><input type="radio" name="C7" value="accept"><span>Acceptance and adaptation (I made peace with the conditions)</span></label></div>
+</div>
+</div>
+<div class="qwrap" data-qwrap="C8">
+<p class="q"><span class="reqstar">*</span> Tell one of your camping nights — from sunset to sunrise — as a story: what happens with the light?</p>
+<p class="hint">Like a story: beginning, conflict, ending.</p>
+<textarea name="C8" placeholder="When the sun set…"></textarea>
+</div>
+<div class="qwrap" data-qwrap="C9">
+<p class="q">Anything important I didn't ask? <span class="tag">optional</span></p>
+<textarea name="C9" placeholder="My note…"></textarea>
+</div>
+</section>
+<div class="actions noprint">
+<button class="btn primary" type="submit">Submit answers</button>
+<button class="btn ghost" type="button" id="btnDraftClear">Clear draft</button>
+<button class="btn ghost" type="button" id="btnPrint">Print form</button>
+</div>
+</form>
+<div id="done" class="card done" hidden>
+<h2>Your answers are saved</h2>
+<p id="doneMsg"></p>
+<div class="actions">
+<button class="btn primary" id="btnJson" type="button">Download JSON</button>
+<button class="btn" id="btnCsv" type="button">Download CSV</button>
+<button class="btn ghost" id="btnNext" type="button">Next respondent</button>
+</div>
+</div>
+<footer class="card foot noprint">
+<div class="saved">Saved responses: <b class="cnt">0</b></div>
+<div class="row">
+<button class="btn" id="btnJson2" type="button">Download JSON</button>
+<button class="btn" id="btnCsv2" type="button">Download CSV</button>
+<button class="btn danger" id="btnClear" type="button">Delete all responses</button>
+</div>
+<p class="hint">Answers are kept only in this browser's memory (localStorage); export the JSON every few responses to be safe.</p>
+</footer>
+</div>
+<script>
+var CFG = {"lang": "en", "ui": {"err": "Please answer all required questions; incomplete ones are highlighted in red.", "err_empty": "No responses saved yet.", "err_storage": "Local saving failed (private mode?). Please note the data down manually.", "confirm_draft": "Clear the current draft?", "confirm_clear": "Delete all responses saved on this device?", "msg_cleared": "Done.", "done_msg": "Response ID: {id} — {n} response(s) saved on this device so far. Download the answers file and send it to the researcher."}, "questions": [{"id": "A1", "type": "text", "req": false}, {"id": "A2", "type": "radio", "req": true}, {"id": "A3", "type": "radio", "req": true}, {"id": "A4", "type": "radio", "req": true}, {"id": "A5", "type": "radio", "req": true}, {"id": "A6", "type": "check", "req": true}, {"id": "A7", "type": "radio", "req": true}, {"id": "A8", "type": "check", "req": true}, {"id": "B1", "type": "radio", "req": true}, {"id": "B2", "type": "check", "req": true}, {"id": "B3", "type": "scale", "req": true}, {"id": "B4", "type": "radio", "req": true}, {"id": "B4b", "type": "scale", "req": true}, {"id": "B5", "type": "radio", "req": true}, {"id": "B6", "type": "textarea", "req": true}, {"id": "B7", "type": "textarea", "req": true}, {"id": "B8", "type": "textarea", "req": true}, {"id": "B9", "type": "textarea", "req": false}, {"id": "B10", "type": "radio", "req": true}, {"id": "B11", "type": "check", "req": true}, {"id": "C1", "type": "textarea", "req": true}, {"id": "C2", "type": "textarea", "req": true}, {"id": "C3", "type": "textarea", "req": true}, {"id": "C4", "type": "textarea", "req": true}, {"id": "C5a", "type": "choice2", "req": true}, {"id": "C5b", "type": "choice2", "req": true}, {"id": "C5c", "type": "choice2", "req": true}, {"id": "C5d", "type": "textarea", "req": true}, {"id": "C6", "type": "textarea", "req": true}, {"id": "C7", "type": "radio", "req": true}, {"id": "C8", "type": "textarea", "req": true}, {"id": "C9", "type": "textarea", "req": false}], "legend_note": "Multi-select answers are joined with | ; \"other: ...\" marks a custom option; scale values are 1..5.", "legend": {"A1": {"key": "nickname", "text": "A nickname or code for the respondent (to track the session)"}, "A2": {"key": "age_group", "text": "Your age group?", "options": {"u18": "Under 18", "18-25": "18–25", "26-35": "26–35", "36-50": "36–50", "o50": "Over 50"}}, "A3": {"key": "gender", "text": "Gender?", "options": {"f": "Female", "m": "Male", "na": "Prefer not to say"}}, "A4": {"key": "camping_experience", "text": "How long have you been camping?", "options": {"lt1": "Less than 1 year", "y1-3": "1–3 years", "y4-10": "4–10 years", "gt10": "More than 10 years"}}, "A5": {"key": "nights_per_year", "text": "How many camping nights per year, usually?", "options": {"n1-2": "1–2 nights", "n3-5": "3–5 nights", "n6-10": "6–10 nights", "ngt10": "More than 10 nights"}}, "A6": {"key": "environments", "text": "Where do you usually camp?", "options": {"forest": "Forest", "mountain": "Mountain", "desert": "Desert", "seaside": "Seaside", "riverlake": "Riverside or lakeside", "yardcar": "Backyard or car camping", "__other__": "Other"}}, "A7": {"key": "group_type", "text": "Who do you usually camp with?", "options": {"solo": "Alone", "couple": "As a couple", "family": "Family with children", "friends": "Group of friends"}}, "A8": {"key": "light_sources", "text": "Which light sources do you usually use at night?", "options": {"torch": "Handheld flashlight", "headlamp": "Headlamp", "lantern": "Table or pole camping lantern", "string": "String or hook lights", "phone": "Phone light", "fire": "Campfire", "tentlight": "Light inside the tent", "__other__": "Other"}}, "B1": {"key": "worst_night_activity", "text": "Which nighttime activity is most unpleasant for you?", "options": {"toilet": "Going to the toilet", "move": "Moving around the camp", "eat": "Eating", "check": "Checking the tent and gear", "winddown": "Winding down before sleep", "__other__": "Other"}}, "B2": {"key": "discomfort_causes", "text": "What creates this discomfort?", "options": {"dark": "Total darkness", "battery": "Battery dying mid-activity", "nopath": "No fixed lights on the paths", "animals": "Fear of wild animals", "insects": "Insects gathering around the light", "bump": "Bumping into things in the dark", "terrain": "Uneven ground", "__other__": "Other"}}, "B3": {"key": "discomfort_intensity_move", "text": "How intense is the discomfort when you move in the dark?", "scale": [1, 5]}, "B4": {"key": "dominant_emotion", "text": "Which emotion comes up most in these situations?", "options": {"anxiety": "Anxiety", "frustration": "Frustration", "fear": "Fear", "disgust": "Disgust (insects)", "tiredness": "Tiredness", "helplessness": "Helplessness"}}, "B4b": {"key": "emotion_intensity", "text": "How intense is this emotion?", "scale": [1, 5]}, "B5": {"key": "coping_mode", "text": "When darkness falls, how do you usually deal with it?", "options": {"conscious": "Conscious planning (I prepare lights and batteries in advance)", "instinct": "Instinctive reactions in the moment", "mix": "A mix of both"}}, "B6": {"key": "flashlight_dies_thoughts", "text": "The moment your flashlight dims or dies halfway, what is your first thought and feeling?"}, "B7": {"key": "wish_light", "text": "Complete the sentence: 'I wish my camping light …'"}, "B8": {"key": "wish_tent_light_alternative", "text": "Complete: 'If something could replace the ceiling light inside the tent, I would want it to …'"}, "B9": {"key": "metaphor_dark_night", "text": "Metaphor: 'A camp night without light is like … , because …'"}, "B10": {"key": "expression_level", "text": "What is your usual reaction to this problem? (closest option)", "options": {"L1": "I act as if the problem doesn't exist (denial)", "L2": "I complain verbally", "L3": "I look for information and solutions", "L4": "I warn others and share my experience", "L5": "I have taken practical action (bought or modified gear)"}}, "B11": {"key": "selection_criteria", "text": "When choosing a light, which criteria matter to you?", "options": {"battery": "Battery life", "brightness": "Brightness", "weight": "Weight and size", "water": "Water resistance", "price": "Price", "noinsect": "Doesn't attract insects", "modes": "Multiple modes (red light, dimmer)", "__other__": "Other"}}, "C1": {"key": "root_metaphor", "text": "Root metaphor — complete: 'A camping light is like … , because …'"}, "C2": {"key": "always_rule", "text": "Complete: 'When camping, one should always …'"}, "C3": {"key": "never_rule", "text": "Complete: 'In a tent or at a camp, one should never …'"}, "C4": {"key": "ideal_camper_myth", "text": "The ideal myth: describe how a truly professional camper behaves at night in camp."}, "C5a": {"key": "value_strong_vs_soft", "text": "Strong clear light, or soft low-consumption light?", "options": {"strong": "Strong clear light", "soft": "Soft low-consumption light"}}, "C5b": {"key": "value_visible_vs_unseen", "text": "Being visible and safe, or staying unseen (not attracting animals and insects)?", "options": {"visible": "Visible and safe", "unseen": "Staying unseen"}}, "C5c": {"key": "value_function_vs_beauty", "text": "Function (practicality), or beauty (design and feeling)?", "options": {"function": "Function", "beauty": "Beauty"}}, "C5d": {"key": "value_reasons", "text": "Why these choices?"}, "C6": {"key": "excellence_threshold", "text": "Excellence threshold: if a camping lighting system were 'perfect', what would it look like? Write every detail."}, "C7": {"key": "narrative_pattern", "text": "Your camping nights feel most like which story?", "options": {"hero": "A hero overcoming difficulties", "victim": "A victim of circumstances and poor gear", "transform": "Transformation and learning (I got better from experience)", "conflict": "An unresolved conflict (the same problem repeats)", "accept": "Acceptance and adaptation (I made peace with the conditions)"}}, "C8": {"key": "night_story", "text": "Tell one of your camping nights — from sunset to sunrise — as a story: what happens with the light?"}, "C9": {"key": "free_notes", "text": "Anything important I didn't ask?"}}};
+(function(){
+var F=document.getElementById('qform');
+var bar=document.getElementById('bar');
+var pct=document.getElementById('pct');
+var errbox=document.getElementById('errbox');
+var done=document.getElementById('done');
+var doneMsg=document.getElementById('doneMsg');
+var intro=document.getElementById('intro');
+var KD='ch4su_draft_'+CFG.lang;
+var KR='ch4su_resp_'+CFG.lang;
+var answers={};
+var tmr=null;
+
+function rebuild(){
+  for(var i=0;i<CFG.questions.length;i++){
+    var q=CFG.questions[i];var id=q.id;var v='';
+    if(q.type==='radio'||q.type==='scale'||q.type==='choice2'){
+      var el=F.querySelector('input[name="'+id+'"]:checked');
+      v=el?el.value:'';
+      if(v==='__other__'){
+        var ot=F.querySelector('input[name="'+id+'__ot"]');
+        v=(ot&&ot.value.trim())?('other: '+ot.value.trim()):'other';
+      }
+    }else if(q.type==='check'){
+      var vals=[];
+      var nodes=F.querySelectorAll('input[name="'+id+'"]:checked');
+      for(var j=0;j<nodes.length;j++){vals.push(nodes[j].value);}
+      var ot2=F.querySelector('input[name="'+id+'__ot"]');
+      if(vals.indexOf('__other__')>-1&&ot2&&ot2.value.trim()){
+        var vals2=[];
+        for(var k=0;k<vals.length;k++){if(vals[k]!=='__other__')vals2.push(vals[k]);}
+        vals2.push('other: '+ot2.value.trim());
+        vals=vals2;
+      }
+      v=vals.join('|');
+    }else{
+      var el3=F.querySelector('[name="'+id+'"]');
+      v=el3?el3.value.trim():'';
+    }
+    answers[id]=v;
+  }
+}
+function refreshSel(){
+  var ws=F.querySelectorAll('.optw');
+  for(var i=0;i<ws.length;i++){
+    var inp=ws[i].querySelector('input');
+    ws[i].classList.toggle('sel',!!(inp&&inp.checked));
+  }
+}
+function saveDraft(){try{localStorage.setItem(KD,JSON.stringify(answers));}catch(e){}}
+function onChange(){
+  rebuild();refreshSel();
+  var total=0,doneCount=0;
+  for(var i=0;i<CFG.questions.length;i++){
+    if(CFG.questions[i].req){total++;
+      var a=answers[CFG.questions[i].id];
+      if(a&&a.length>0)doneCount++;
+    }
+  }
+  var p=total?Math.round(100*doneCount/total):100;
+  bar.style.width=p+'%';pct.textContent=p+'%';
+  clearTimeout(tmr);tmr=setTimeout(saveDraft,250);
+}
+function restore(){
+  var raw=null;
+  try{raw=localStorage.getItem(KD);}catch(e){}
+  if(!raw)return;
+  var a=null;try{a=JSON.parse(raw);}catch(e){return;}
+  for(var i=0;i<CFG.questions.length;i++){
+    var q=CFG.questions[i];var v=a[q.id];
+    if(v==null)continue;
+    if(q.type==='radio'||q.type==='scale'||q.type==='choice2'){
+      var val=v;
+      if(v.indexOf('other:')===0){
+        val='__other__';
+        var ot=F.querySelector('input[name="'+q.id+'__ot"]');
+        if(ot&&!ot.value)ot.value=v.slice(6).trim();
+      }
+      var el=F.querySelector('input[name="'+q.id+'"][value="'+val+'"]');
+      if(el)el.checked=true;
+    }else if(q.type==='check'){
+      var parts=v.split('|');
+      for(var j=0;j<parts.length;j++){
+        var tok=parts[j];
+        if(tok.indexOf('other:')===0){
+          var ot2=F.querySelector('input[name="'+q.id+'__ot"]');
+          if(ot2&&!ot2.value)ot2.value=tok.slice(6).trim();
+          tok='__other__';
+        }
+        var el2=F.querySelector('input[name="'+q.id+'"][value="'+tok+'"]');
+        if(el2)el2.checked=true;
+      }
+    }else{
+      var el3=F.querySelector('[name="'+q.id+'"]');
+      if(el3)el3.value=v;
+    }
+  }
+}
+function counts(){try{return JSON.parse(localStorage.getItem(KR)||'[]').length;}catch(e){return 0;}}
+function showCount(){var n=String(counts());var els=document.querySelectorAll('.cnt');for(var i=0;i<els.length;i++)els[i].textContent=n;}
+function clearErrs(){
+  var ws=F.querySelectorAll('.qwrap.err');
+  for(var i=0;i<ws.length;i++)ws[i].classList.remove('err');
+  errbox.hidden=true;
+}
+function dl(name,content,mime){
+  var b=new Blob([content],{type:mime});
+  var u=URL.createObjectURL(b);
+  var a=document.createElement('a');
+  a.href=u;a.download=name;
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(u);},400);
+}
+function getArr(){try{return JSON.parse(localStorage.getItem(KR)||'[]');}catch(e){return [];}}
+function exportJson(){
+  var arr=getArr();
+  if(!arr.length){alert(CFG.ui.err_empty);return;}
+  var out={type:'chaharsu-vedgar-bavargan',version:'0.02',lang:CFG.lang,exportedAt:new Date().toISOString(),legend_note:CFG.legend_note,legend:CFG.legend,responses:arr};
+  dl('chaharsu_responses_'+CFG.lang+'.json',JSON.stringify(out,null,2),'application/json;charset=utf-8');
+}
+function exportCsv(){
+  var arr=getArr();
+  if(!arr.length){alert(CFG.ui.err_empty);return;}
+  var cols=['response_id','submitted_at','lang'];
+  for(var i=0;i<CFG.questions.length;i++)cols.push(CFG.questions[i].id);
+  function esc(v){v=(v==null?'':String(v));return '"'+v.replace(/"/g,'""')+'"';}
+  var lines=[cols.map(esc).join(',')];
+  for(var r=0;r<arr.length;r++){
+    var row=[esc(arr[r].id),esc(arr[r].submittedAt),esc(arr[r].lang)];
+    for(var c=3;c<cols.length;c++){
+      var val=(arr[r].answers&&arr[r].answers[cols[c]])?arr[r].answers[cols[c]]:'';
+      row.push(esc(val));
+    }
+    lines.push(row.join(','));
+  }
+  dl('chaharsu_responses_'+CFG.lang+'.csv','\ufeff'+lines.join('\r\n'),'text/csv;charset=utf-8');
+}
+F.addEventListener('input',onChange);
+F.addEventListener('change',onChange);
+F.addEventListener('submit',function(ev){
+  ev.preventDefault();
+  rebuild();clearErrs();
+  var missing=[];
+  for(var i=0;i<CFG.questions.length;i++){
+    var q=CFG.questions[i];
+    if(q.req&&!(answers[q.id]&&answers[q.id].length>0))missing.push(q);
+  }
+  if(missing.length){
+    for(var m=0;m<missing.length;m++){
+      var w=F.querySelector('[data-qwrap="'+missing[m].id+'"]');
+      if(w)w.classList.add('err');
+    }
+    errbox.textContent=CFG.ui.err;errbox.hidden=false;
+    var first=F.querySelector('.qwrap.err');
+    if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  var resp={id:'R-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,6),lang:CFG.lang,submittedAt:new Date().toISOString(),answers:answers};
+  var arr=getArr();arr.push(resp);
+  try{localStorage.setItem(KR,JSON.stringify(arr));}catch(e){alert(CFG.ui.err_storage);return;}
+  try{localStorage.removeItem(KD);}catch(e){}
+  showCount();
+  F.hidden=true;intro.hidden=true;done.hidden=false;
+  doneMsg.textContent=CFG.ui.done_msg.replace('{id}',resp.id).replace('{n}',String(arr.length));
+  done.scrollIntoView({behavior:'smooth',block:'start'});
+});
+document.getElementById('btnNext').addEventListener('click',function(){try{localStorage.removeItem(KD);}catch(e){}location.reload();});
+document.getElementById('btnDraftClear').addEventListener('click',function(){if(confirm(CFG.ui.confirm_draft)){try{localStorage.removeItem(KD);}catch(e){}location.reload();}});
+document.getElementById('btnPrint').addEventListener('click',function(){window.print();});
+document.getElementById('btnJson').addEventListener('click',exportJson);
+document.getElementById('btnCsv').addEventListener('click',exportCsv);
+document.getElementById('btnJson2').addEventListener('click',exportJson);
+document.getElementById('btnCsv2').addEventListener('click',exportCsv);
+document.getElementById('btnClear').addEventListener('click',function(){
+  if(confirm(CFG.ui.confirm_clear)){
+    try{localStorage.removeItem(KR);localStorage.removeItem(KD);}catch(e){}
+    showCount();alert(CFG.ui.msg_cleared);
+  }
+});
+restore();rebuild();refreshSel();onChange();
+})();
+</script>
+</body>
+</html>
